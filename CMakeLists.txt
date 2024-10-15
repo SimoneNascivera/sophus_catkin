@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.4)
-project(Sophus VERSION 1.2.1)
+project(sophus VERSION 1.2.1)
+
+find_package(catkin_simple REQUIRED)
+catkin_simple()
+
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -151,8 +156,11 @@ install(
   DESTINATION ${SOPHUS_CMAKE_EXPORT_DIR}
 )
 
-# Install header files
-install(
-  FILES ${SOPHUS_HEADER_FILES}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sophus
-)
+install(FILES ${SOPHUS_HEADER_FILES}
+        DESTINATION ${CATKIN_DEVEL_PREFIX}/include/sophus
+        )
+install(DIRECTORY ${CATKIN_DEVEL_PREFIX}/lib/
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        FILES_MATCHING PATTERN "libsophus*")
+cs_export(INCLUDE_DIRS ${CATKIN_DEVEL_PREFIX}/include
+          LIBRARIES sophus)
